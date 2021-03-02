@@ -30,7 +30,7 @@ object Blackbox {
 
   private def destroyProcess[F[_]: Sync](proc: SubProcess): F[Unit] = Sync[F].delay(proc.destroyForcibly())
 
-  private def countWords[F[_]]: Pipe[F, Chunk[Event], Count] = {
+  private[thinkharder] def countWords[F[_]]: Pipe[F, Chunk[Event], Count] = {
     _.map(batch => Counter.countWords(batch))
   }
 
