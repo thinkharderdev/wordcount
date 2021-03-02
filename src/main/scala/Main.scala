@@ -10,10 +10,10 @@ object Main extends IOApp {
       .use { blocker =>
         val program = for {
           queue <- Stream.eval(Queue.synchronous[IO, Count])
-          _ <- Blackbox
-            .eventStream[IO](blocker)
+          countStream = Blackbox
+            .wordCountStream[IO](blocker)
             .through(queue.enqueue)
-          server <- HttpServer.stream[IO](queue)
+          server <- HttpServer.stream[IO](queue).concurrently(countStream)
         } yield server
 
         program.compile.drain

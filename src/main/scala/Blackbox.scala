@@ -34,7 +34,7 @@ object Blackbox {
     _.map(batch => Counter.countWords(batch))
   }
 
-  def eventStream[F[_]: ConcurrentEffect: Timer](
+  def wordCountStream[F[_]: ConcurrentEffect: Timer](
       blocker: Blocker
   )(implicit cs: ContextShift[F]): Stream[F, Count] = {
     Stream
